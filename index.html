@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foodistan - Indian Cuisine</title>
+<style>
+    body, html {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(45deg, #FFA17F, #00223E);
+        margin: 0;
+        padding: 0;
+        color: #333;
+        height: 100%;
+        box-sizing: border-box;
+    }
+    header {
+        background-color: rgba(255, 255, 255, 0.5);
+        text-align: center;
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+    header a {
+        text-decoration: none;
+        color: #333;
+        margin: 0 20px;
+        font-weight: bold;
+    }
+    section {
+        padding-top: 60px; /* to not hide behind fixed header */
+    }
+    .content {
+        display: none;
+    }
+    .active {
+        display: block;
+    }
+    .recipe {
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin: 10px;
+        padding: 10px;
+        width: calc(25% - 20px);
+        float: left;
+    }
+    .recipe img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .recipe button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+    .price {
+        font-size: 1.2em;
+        color: #007BFF;
+        margin-top: 5px;
+    }
+    footer {
+        text-align: center;
+        padding: 10px 0;
+        background-color: rgba(255, 255, 255, 0.5);
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+    #homePage {
+        padding: 60px 20px 20px;
+        text-align: center;
+    }
+    #homePage img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="javascript:void(0);" onclick="showHome()" aria-label="Home">Home</a>
+        <a href="javascript:void(0);" onclick="showMenu()" aria-label="Menu">Menu</a>
+        <a href="#about" aria-label="About">About</a>
+    </nav>
+</header>
+
+<div id="homePage" class="content active">
+    <img src="https://cdn.dribbble.com/users/4913590/screenshots/15283932/media/b430f8df20aa4f1cc96e412c68db44d2.jpg" alt="Foodistan Logo">
+    <img src="https://d4t7t8y8xqo0t.cloudfront.net/resized/750X436/restaurant%2F649660%2Frestaurant020220816105121.jpg" alt="Interior of Foodistan Restaurant">
+</div>
+
+<section id="menu" class="content" aria-labelledby="menu-heading">
+    <h2 id="menu-heading" style="visibility:hidden;">Menu Items</h2>
+    <!-- Dynamic recipe list populated by JavaScript -->
+</section>
+
+<footer>
+    &copy; 2024 Foodistan. All rights reserved.
+</footer>
+
+<script>
+    const recipes = [
+        { id: 1, title: "Butter Chicken", description: "Roasted marinated chicken in a spiced curry sauce.", price: "$15", img: "https://littlesunnykitchen.com/wp-content/uploads/Chicken-tikka-masala-2-7.jpg" },
+        { id: 2, title: "Palak Paneer", description: "Spinach and paneer in a thick curry sauce based on pureed spinach.", price: "$12", img: "https://minimalistbaker.com/wp-content/uploads/2018/10/Vegan-Palak-Paneer-SQUARE.jpg" },
+        { id: 3, title: "Biryani", description: "Fragrant Indian rice dish with pieces of chicken, cooked with saffron and spices.", price: "$18", img: "https://assets.limetray.com/assets/user_images/menus/compressed/1636789829_Tandoorichickennew.jpg" },
+        { id: 4, title: "Chole Bhature", description: "Combination of spicy chickpeas and deep-fried bread called Bhature.", price: "$10", img: "https://thumbs.dreamstime.com/b/chole-bhature-dark-background-served-laccha-onions-pickle-buttermilk-restaurant-style-304060489.jpg" }
+    ];
+
+    function addRecipesToMenu() {
+        const menuSection = document.getElementById('menu');
+        menuSection.innerHTML = ''; // Clear existing content
+        recipes.forEach(recipe => {
+            const recipeDiv = document.createElement('div');
+            recipeDiv.className = 'recipe';
+            recipeDiv.innerHTML = `
+                <img src="${recipe.img}" alt="${recipe.title}">
+                <h3>${recipe.title}</h3>
+                <p>${recipe.description}</p>
+                <div class="price">${recipe.price}</div>
+                <button onclick="viewIngredients(${recipe.id})" aria-label="View ingredients for ${recipe.title}">View Ingredients</button>
+                <button onclick="orderRecipe(${recipe.id})" aria-label="Order ${recipe.title} now">Order Now</button>
+            `;
+            menuSection.appendChild(recipeDiv);
+        });
+    }
+
+    function viewIngredients(recipeId) {
+        alert('Ingredients for ' + recipes.find(r => r.id === recipeId).title);
+    }
+
+    function orderRecipe(recipeId) {
+        alert('Ordering ' + recipes.find(r => r.id === recipeId).title);
+    }
+
+    function showHome() {
+        document.getElementById('homePage').style.display = 'block';
+        document.getElementById('menu').style.display = 'none';
+    }
+
+    function showMenu() {
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('menu').style.display = 'block';
+        addRecipesToMenu(); // Ensure menu is updated each time it's viewed
+    }
+
+    window.onload = showHome; // Show home page on initial load
+</script>
+
+</body>
+</html>
